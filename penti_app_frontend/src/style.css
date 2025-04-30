@@ -57,7 +57,7 @@ body {
 }
 
 .hero .highlight {
-  color: #a636c3;
+  color: #E5B5DC;
 }
 
 .hero-img {
@@ -68,10 +68,15 @@ body {
   display: inline-block;
   margin-top: 1rem;
   padding: 0.75rem 1.5rem;
-  background: #a636c3;
+  background: #E5B5DC;
   color: white;
   border-radius: 10px;
   text-decoration: none;
+}
+
+h2 {
+  font-size: 2rem; /* veya 32px */
+  font-weight: bold;
 }
 
 /* FEATURES */
