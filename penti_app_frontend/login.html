@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Penti – Log In</title>
+    <link rel="stylesheet" href="/src/login.css" />
+  </head>
+  <body>
+    <div class="login-page">
+      <div class="login-left">
+        <img src="/images/laptop.png" alt="Analytics Illustration" />
+        <p>
+          A <span class="highlight">Great way</span> to <strong>analyze your sales data</strong><br />
+          and <strong>predict your financial future</strong>.
+        </p>
+      </div>
+
+      <div class="login-right">
+        <h2>WELCOME!</h2>
+        <form id="login-form">
+          <input type="text" name="email" placeholder="Username, phone or email" required />
+          <input type="password" name="password" placeholder="Password" required />
+          <button type="submit" class="login-btn">log in</button>
+          <div class="or">or</div>
+          <a href="#" class="forgot">Forgot password?</a>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      document.getElementById("login-form").addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const email = e.target.email.value;
+        const password = e.target.password.value;
+
+        try {
+          const res = await fetch("http://localhost:5000/login", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email, password }),
+          });
+
+          const data = await res.json();
+
+          if (data.success) {
+            // ✅ Giriş başarılıysa dashboard'a yönlendir
+            window.location.href = "/dashboard.html";
+          } else {
+            alert("Hatalı giriş bilgileri.");
+          }
+        } catch (err) {
+          console.error("Giriş sırasında hata oluştu:", err);
+          alert("Sunucuya bağlanılamadı.");
+        }
+      });
+    </script>
+  </body>
+</html>
