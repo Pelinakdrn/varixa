@@ -15,12 +15,12 @@
   }
   
   .login-left img {
-    max-width: 300px;
-    margin-bottom: 1rem;
+    max-width: 400px;
+    margin-bottom: 0.1rem;
   }
   
   .login-left p {
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     line-height: 1.8;
     color: #333;
   }
@@ -30,7 +30,7 @@
   }
   
   .login-right {
-    width: 350px;
+    width: 400px;
     border: 1px solid #ccc;
     padding: 2rem;
     border-radius: 12px;
