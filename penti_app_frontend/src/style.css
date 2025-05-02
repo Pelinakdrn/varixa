@@ -93,6 +93,7 @@ body {
 .hero-text {
 
   flex: 1;
+  padding: 3rem;
 
 }
 
@@ -111,17 +112,20 @@ body {
 }
 
 .hero-image-wrapper {
-  flex: 1;
-  display: flex;
-  justify-content: flex-end;
+  position: absolute;
+  right: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
 }
+
+
 
 .hero-side-img {
   max-width: 400px;
   width: 100%;
   height: auto;
-  border-radius: 12px;
 }
+
 
 .cta-btn {
   display: inline-block;
@@ -220,3 +224,4 @@ h2 {
   margin-top: 1rem;
   font-size: 0.9rem;
 }
+
