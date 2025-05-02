@@ -7,8 +7,12 @@
     <link rel="stylesheet" href="/src/style.css" />
   </head>
   <body>
-    <!-- Header artık main.js ile dinamik olarak eklenecek -->
+    <!-- Sabit Logo -->
+    <div class="floating-logo">
+      <img src="/images/logo.png" alt="Logo" />
+    </div>
 
+    <!-- Giriş Alanı -->
     <section class="hero">
       <div class="container hero-inner">
         <div class="hero-text">
@@ -30,26 +34,32 @@
       </div>
     </section>
 
-    <section class="features-wrapper">
-      <div class="features">
-        <div class="feature">
-          <img src="/images/main1.png" alt="Notes" />
-          <h3>NOTES</h3>
-          <p>A smart place to organize insights and track your financial journey.</p>
-        </div>
-        <div class="feature">
-          <img src="/images/main2.png" alt="Forecast" />
-          <h3>PREDICTION</h3>
-          <p>Upload your data, choose your method, and predict smarter.</p>
-        </div>
-        <div class="feature">
-          <img src="/images/main3.png" alt="Budget" />
-          <h3>BUDGET PLANNING</h3>
-          <p>Turn your data into a clear, actionable budget plan.</p>
-        </div>
+    <!-- Bilgilendirici Kartlar -->
+    <section class="info-cards-wrapper">
+      <div class="info-card card1">
+        <div class="info-card-number">1</div>
+        <h3 class="info-card-title">NOTES</h3>
+        <p class="info-card-desc">
+          A smart place to organize insights and track your financial journey.
+        </p>
+      </div>
+      <div class="info-card card2">
+        <div class="info-card-number">2</div>
+        <h3 class="info-card-title">PREDICTION</h3>
+        <p class="info-card-desc">
+          Upload your data, choose your method, and predict smarter.
+        </p>
+      </div>
+      <div class="info-card card3">
+        <div class="info-card-number">3</div>
+        <h3 class="info-card-title">BUDGET PLANNING</h3>
+        <p class="info-card-desc">
+          Turn your data into a clear, actionable budget plan.
+        </p>
       </div>
     </section>
 
+    <!-- Footer -->
     <footer class="footer">
       <div>
         <p>Sign in to access forecasts, budgets, and notes!</p>

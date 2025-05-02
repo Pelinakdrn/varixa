@@ -21,7 +21,7 @@ body {
 /* NAVBAR */
 
 .navbar {
-  background: linear-gradient(10deg, #000000, #EBD9F1);
+  background: linear-gradient(10deg, #909BFF, #EBD9F1);
   padding: 1rem 2rem;
   position: relative;
 }
@@ -56,7 +56,7 @@ body {
   bottom: -4px;
   width: 0%;
   height: 2px;
-  background-color: #B989EB;
+  background-color: #7D7BFD;
   transition: width 0.3s ease;
 }
 
@@ -66,19 +66,43 @@ body {
 
 .login-btn {
   margin-left: auto;
-  background: linear-gradient(50deg, #000000, #e5b5dc);
-  color: white;
-  padding: 0.5rem 1.2rem;
-  border-radius: 20px;
+  padding: 0.5rem 1.5rem;
+  font-weight: 600;
+  border-radius: 999px;
+  background: white;
+  color: black;
+  z-index: 0;
+  transition: all 0.4s ease;
+  overflow: hidden;
+  border: none;
   text-decoration: none;
-  font-weight: bold;
-  transition: background 0.3s ease;
-  white-space: nowrap;
 }
 
-.login-btn:hover {
-  background: linear-gradient(50deg, #000000, #e5b5dc);
+.login-btn::before {
+  content: "";
+  position: right;
+  inset: 0;
+  padding: 2px;
+  background: linear-gradient(to right, #909BFF, #e5b5dc);
+  border-radius: inherit;
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  z-index: -1;
+  transition: opacity 0.4s ease;
+  opacity: 1;  
 }
+
+  .login-btn:hover {
+    background: linear-gradient(to right, #909BFF, #e5b5dc);
+    color: white;
+  }
+  
+  .login-btn:hover::before {
+    opacity: 0;
+  }
 
 /* HERO SECTION */
 
@@ -131,7 +155,7 @@ body {
   display: inline-block;
   margin-top: 1rem;
   padding: 0.75rem 1.5rem;
-  background: linear-gradient(50deg, #000000, #e5b5dc);
+  background: linear-gradient(50deg, #909BFF, #e5b5dc);
   color: white;
   border-radius: 10px;
   text-decoration: none;
@@ -140,7 +164,7 @@ body {
 }
 
 .cta-btn:hover {
-  background: linear-gradient(50deg, #000000, #e5b5dc);
+  background: linear-gradient(50deg, #909BFF, #e5b5dc);
 }
 
 /* HEADERS */
@@ -150,61 +174,7 @@ h2 {
   font-weight: bold;
 }
 
-/* FEATURES */
 
-.features-wrapper {
-  position: relative;
-  padding: 2rem 1rem;
-  overflow-x: hidden;
-}
-
-.features {
-  display: flex;
-  gap: 1rem;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  padding-bottom: 1rem;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-}
-
-.features::-webkit-scrollbar {
-  display: none;
-}
-
-.feature {
-  min-width: 100px;
-  flex: 0 0 auto;
-  background: #fff;
-  border-radius: 10px;
-  text-align: center;
-  padding: 0.25rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  scroll-snap-align: start;
-}
-
-.feature:hover {
-  transform: scale(1.05);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-.feature img {
-  max-width: 50%;
-  height: auto;
-  border-radius: 10px;
-  margin-bottom: 0.5rem;
-}
-
-.feature h3 {
-  font-size: 1rem;
-  margin: 0.4rem 0;
-}
-
-.feature p {
-  font-size: 0.8rem;
-  color: #555;
-}
 
 /* FOOTER */
 
@@ -225,3 +195,94 @@ h2 {
   font-size: 0.9rem;
 }
 
+.highlight {
+  background: linear-gradient(to right, #909BFF, #EBD9FF);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+.floating-logo {
+  position: fixed;
+  top: 0px;
+  left: 10px;
+  z-index: 9999;
+}
+
+.floating-logo img {
+  width: 100px;
+  height: auto;
+  object-fit: contain;
+  opacity: 0.95;
+}
+
+
+
+.info-cards-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  padding: 0;
+  margin: 4rem 0 0;
+  border-radius: 0;
+  overflow: hidden;
+}
+
+.info-card {
+  flex: 1;
+  text-align: center;
+  padding: 3rem 2rem;
+  color: white;
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+  transition: transform 0.3s ease;
+}
+
+
+.info-card:last-child {
+  border-right: none;
+}
+
+.info-card-number {
+  width: 60px;
+  height: 60px;
+  border: 2px solid white;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  margin-bottom: 1rem;
+  transition: all 0.3s ease;
+}
+
+.info-card-title {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+
+.info-card-desc {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* Farklı renk temaları */
+.card1 {
+  background: linear-gradient(135deg, #AFAEFD, #AFAEFD);
+}
+
+.card2 {
+  background: linear-gradient(135deg, #A2A1FF, #A2A1FF);
+}
+
+.card3 {
+  background: linear-gradient(135deg, #8D8BFF, #8D8BFF);
+}
+
+
+.info-card-number:hover {
+  background-color: rgba(255, 255, 255, 0.2); /* veya istediğin renk */
+  color: #EBD9FF;
+}
