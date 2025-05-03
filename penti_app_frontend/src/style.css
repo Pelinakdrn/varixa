@@ -235,6 +235,7 @@ h2 {
   color: white;
   border-right: 1px solid rgba(255, 255, 255, 0.2);
   transition: transform 0.3s ease;
+  border-radius: 1%
 }
 
 
@@ -258,9 +259,9 @@ h2 {
 }
 
 .info-card-title {
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   margin-bottom: 1rem;
-  font-weight: bold;
+  font-weight:bolder;
 }
 
 .info-card-desc {
@@ -270,17 +271,16 @@ h2 {
 
 /* Farklı renk temaları */
 .card1 {
-  background: linear-gradient(135deg, #AFAEFD, #AFAEFD);
+  background: linear-gradient(135deg, #383790, #3E3DCD);
 }
 
 .card2 {
-  background: linear-gradient(135deg, #A2A1FF, #A2A1FF);
+  background: linear-gradient(135deg, #383790, #5655DA);
 }
 
 .card3 {
-  background: linear-gradient(135deg, #8D8BFF, #8D8BFF);
+  background: linear-gradient(135deg, #383790, #7574E7);
 }
-
 
 .info-card-number:hover {
   background-color: rgba(255, 255, 255, 0.2); /* veya istediğin renk */
