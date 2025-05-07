@@ -1,13 +1,15 @@
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import WelcomePage from "./pages/WelcomePage"; // doğru
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import WelcomePage from "./pages/Welcomep";
 
 function App() {
   return (
-    <Router>
-      <Switch>
-        <Route path="/" component={WelcomePage} />
-      </Switch>
-    </Router>
+    <>
+      <Router>
+        <Routes>
+          <Route path="/" element={<WelcomePage />} />
+        </Routes>
+      </Router>
+    </>
   );
 }
 
