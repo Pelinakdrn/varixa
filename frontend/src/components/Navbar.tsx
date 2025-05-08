@@ -5,7 +5,7 @@ import logo from "../assets/logo.png";
 const Navbar = () => {
   return (
     <>
-      <nav className="bg-white dark:bg-gray-900 fixed w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
+      <nav className="text-white bg-[#0b1222] fixed w-full z-20 top-0 start-0 border-b border-gray-800">
         <div className="max-w-screen-xl mx-auto p-4 flex items-center justify-between">
           {/* Sol - Logo */}
           <div className="flex-shrink-0">
@@ -23,11 +23,11 @@ const Navbar = () => {
 
           {/* Orta - Menü */}
           <div className="hidden md:flex flex-1 justify-center">
-            <ul className="flex space-x-8 text-sm font-large text-[20px]">
+            <ul className="flex space-x-8 text-sm font-large text-[20px] text-white">
               <li>
                 <Link
                   to="/"
-                  className="text-blue-700"
+                  className="text-blue-300"
                 >
                   Home
                 </Link>
@@ -35,7 +35,7 @@ const Navbar = () => {
               <li>
                 <Link
                   to="/about"
-                  className="text-gray-900 hover:text-blue-700 dark:text-white"
+                  className="text-white hover:text-blue-300"
                 >
                   About Us
                 </Link>
@@ -43,7 +43,7 @@ const Navbar = () => {
               <li>
                 <Link
                   to="/services"
-                  className="text-gray-900 hover:text-blue-700 dark:text-white"
+                  className="text-white hover:text-blue-300 "
                 >
                   Features
                 </Link>
@@ -51,9 +51,17 @@ const Navbar = () => {
               <li>
                 <Link
                   to="/contact"
-                  className="text-gray-900 hover:text-blue-700 dark:text-white"
+                  className="text-white hover:text-blue-300"
                 >
                   Contact
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/blog"
+                  className="text-white hover:text-blue-300"
+                >
+                  Blog
                 </Link>
               </li>
             </ul>
