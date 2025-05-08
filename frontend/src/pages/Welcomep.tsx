@@ -6,20 +6,14 @@ const WelcomePage = () => {
   return (
     <>
       <Navbar />
-
-      <div className="pt-28 text-center">
-        <h1 className="text-4xl font-bold text-blue-600">Hoş geldin Varixa!</h1>
-        <p className="mt-4 text-gray-600">Bu, Welcome Page'imizin başlangıcı.</p>
-      </div>
-
-      <section className="bg-white dark:bg-gray-900 mt-10">
+      <section className="bg-white dark:bg-gray-900 mt-10 ">
         <div className="grid max-w-screen-xl px-4 py-8 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12">
           {/* Sol içerik */}
           <div className="mr-auto place-self-center lg:col-span-7">
-            <h2 className="max-w-2xl mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl dark:text-white">
+            <h2 className="max-w-2xl mb-7 text-4xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl dark:text-white">
               Prediction and analysis tool for your sales data
             </h2>
-            <p className="max-w-2xl mb-6 font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl dark:text-gray-400">
+            <p className="max-w-2xl mb-3 font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl dark:text-gray-400">
               A Great way to analyze your sales data and predict your financial future.
             </p>
 
@@ -38,14 +32,14 @@ const WelcomePage = () => {
             </div>
           </div>
 
-          <div className="hidden lg:mt-0 lg:col-span-5 lg:flex">
+          <div className="hidden lg:mt-0 lg:col-span-5 lg:flex ">
             <img src={heroImage} alt="mockup" />
           </div>
         </div>
       </section>
 
-      <section className="overflow-hidden bg-white py-8 sm:py-16 mt-20">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+      <section className="overflow-hidden bg-white py-8 sm:py-16 mt-20 ">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8 ">
           <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
             {/* Sol içerik */}
             <div className="lg:pr-8 lg:pt-4">
