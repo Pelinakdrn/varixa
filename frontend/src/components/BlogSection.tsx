@@ -1,6 +1,6 @@
 const BlogSection = () => {
     return (
-      <div className=" sm:px-6 px-4 py-12 mt-40">
+      <div className=" sm:px-6 px-4 py-12 mt-40 mb-65">
         <div className="max-w-7xl max-md:max-w-lg mx-auto">
           <div className="text-left">
             <h2 className="text-3xl font-bold text-slate-900 inline-block">LATEST BLOGS</h2>

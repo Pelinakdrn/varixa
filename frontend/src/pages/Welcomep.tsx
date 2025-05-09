@@ -3,7 +3,7 @@ import heroImage from "../assets/hero.png";
 import "../css/button.css";
 import ContactSection from "../components/ContactSection"; 
 import InfoCards from "../components/InfoCards";
-
+import Footer from "../components/Footer";
 
 const WelcomePage = () => {
   return (
@@ -115,8 +115,8 @@ const WelcomePage = () => {
         </div>
       </section>
       <InfoCards />
-
       <ContactSection />
+      <Footer />
     </>
   );
 };

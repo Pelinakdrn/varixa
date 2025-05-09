@@ -1,6 +1,6 @@
 const ContactSection = () => {
     return (
-      <section className="py-16 mt-40">
+      <section className="py-16 mt-40 mb-35">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid sm:grid-cols-2 items-start gap-12 py-12">
             {/* Sol içerik */}

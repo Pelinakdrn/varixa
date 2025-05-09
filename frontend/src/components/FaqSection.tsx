@@ -23,7 +23,7 @@ const faqData = [
 
 const FaqSection = () => {
   return (
-    <div className="bg-white py-16 mt-24">
+    <div className="bg-white py-16 mt-24 mb-35">
       <div className="max-w-7xl mx-auto px-10">
         <h2 className="text-2xl sm:text-3xl font-bold text-indigo-1000 mb-10">
           Frequently Asked Questions
