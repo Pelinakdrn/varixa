@@ -10,11 +10,7 @@ const Navbar = () => {
           {/* Sol - Logo */}
           <div className="flex-shrink-0">
             <Link to="/" className="flex items-center space-x-1">
-            <img
-            src={logo}
-            className="h-[55px]"
-            alt="varixa Logo"
-            />
+              <img src={logo} className="h-[55px]" alt="varixa Logo" />
               <span className="text-2xl font-semibold whitespace-nowrap dark:text-white">
                 VARIXA
               </span>
@@ -25,61 +21,38 @@ const Navbar = () => {
           <div className="hidden md:flex flex-1 justify-center">
             <ul className="flex space-x-8 text-sm font-large text-[20px] text-white">
               <li>
-                <Link
-                  to="/"
-                  className="text-blue-300"
-                >
-                  Home
-                </Link>
+                <Link to="/" className="text-blue-300">Home</Link>
               </li>
               <li>
-                <Link
-                  to="/about"
-                  className="text-white hover:text-blue-300"
-                >
-                  About Us
-                </Link>
+                <Link to="/about" className="text-white hover:text-blue-300">About Us</Link>
               </li>
               <li>
-                <Link
-                  to="/services"
-                  className="text-white hover:text-blue-300 "
-                >
-                  Features
-                </Link>
+                <Link to="/services" className="text-white hover:text-blue-300">Features</Link>
               </li>
               <li>
-                <Link
-                  to="/contact"
-                  className="text-white hover:text-blue-300"
-                >
-                  Contact
-                </Link>
+                <Link to="/contact" className="text-white hover:text-blue-300">Contact</Link>
               </li>
               <li>
-                <Link
-                  to="/blog"
-                  className="text-white hover:text-blue-300"
-                >
-                  Blog
-                </Link>
+                <Link to="/blog" className="text-white hover:text-blue-300">Blog</Link>
               </li>
             </ul>
           </div>
 
           {/* Sağ - Buton */}
           <div className="flex-shrink-0 buttons">
-            <button className="blob-btn">
-              Log In
-              <span className="blob-btn__inner">
-                <span className="blob-btn__blobs">
-                  <span className="blob-btn__blob"></span>
-                  <span className="blob-btn__blob"></span>
-                  <span className="blob-btn__blob"></span>
-                  <span className="blob-btn__blob"></span>
+            <Link to="/login">
+              <button className="blob-btn">
+                Log In
+                <span className="blob-btn__inner">
+                  <span className="blob-btn__blobs">
+                    <span className="blob-btn__blob"></span>
+                    <span className="blob-btn__blob"></span>
+                    <span className="blob-btn__blob"></span>
+                    <span className="blob-btn__blob"></span>
+                  </span>
                 </span>
-              </span>
-            </button>
+              </button>
+            </Link>
           </div>
         </div>
       </nav>
