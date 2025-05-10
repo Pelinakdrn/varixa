@@ -1,20 +1,35 @@
+import React from "react";
+
 type InputProps = {
   label: string;
   name: string;
-  type?: string;
   placeholder?: string;
+  type?: string;
+  value?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-const Input: React.FC<InputProps> = ({ label, name, type = "text", placeholder }) => {
+const Input: React.FC<InputProps> = ({
+  label,
+  name,
+  placeholder,
+  type = "text",
+  value,
+  onChange,
+}) => {
   return (
     <div className="mb-4">
-      <label className="block text-sm font-medium text-white mb-1">{label}</label>
+      <label className="block text-sm font-medium mb-1" htmlFor={name}>
+        {label}
+      </label>
       <input
-        type={type}
+        id={name}
         name={name}
+        type={type}
         placeholder={placeholder}
-        autoComplete="off"
-        className="w-full rounded-md border border-gray-600 bg-transparent px-3 py-2 text-sm text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500"
+        value={value}
+        onChange={onChange}
+        className="w-full px-4 py-2 rounded-md bg-[#1f2937] border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:ring focus:ring-blue-500"
       />
     </div>
   );

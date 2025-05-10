@@ -1,27 +1,43 @@
+import { useState } from "react";
+import { useAuth } from "../../components/contexts/AuthContext";
 import Input from "../ui/Input";
 import Checkbox from "../ui/Checkbox";
 import Button from "../ui/Button";
 import { Link } from "react-router-dom";
-import "../../css/hoverUnderline.css"; // ! CSS dosyanın doğru path'ine göre güncellemeyi unutma
+import "../../css/hoverUnderline.css";
 
 const LoginForm = () => {
+  const { login } = useAuth();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    login(username, password); // şimdilik otomatik geçiş yapar
+  };
+
   return (
     <div className="w-full max-w-md mx-auto bg-[#0b1222] text-white p-6 rounded-xl shadow-lg border border-[#0b1222]">
       <h2 className="text-2xl font-semibold mb-1">Login</h2>
       <p className="text-sm text-gray-400 mb-6">
         Welcome back, enter your credentials to continue.
       </p>
-      <form>
+
+      <form onSubmit={handleSubmit}>
         <Input
           label="Username"
           name="username"
           placeholder="Enter your username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
         />
         <Input
           label="Password"
           name="password"
           type="password"
           placeholder="••••••••"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
         />
 
         <div className="flex items-center justify-between mb-4">
@@ -35,7 +51,11 @@ const LoginForm = () => {
         </div>
 
         <div className="flex justify-center items-center gap-4">
-          <Button type="submit" variant="custom" className="hover-underline ">
+          <Button
+            type="submit"
+            variant="custom"
+            className="hover-underline"
+          >
             Log in
           </Button>
         </div>
