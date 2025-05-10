@@ -1,12 +1,12 @@
 import {
-  LayoutDashboard,
-  Inbox,
-  Users,
-  ShoppingBag,
+  BarChart2,
+  Database,
+  LineChart,
+  Wallet,
   LogOut,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import Logo from "../../assets/logo.png"; 
+import logo from "../../assets/logo.png";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -21,36 +21,34 @@ const SidebarMenu: React.FC<SidebarProps> = ({ isOpen }) => {
     >
       <div className="flex items-center justify-center mb-8">
         <img
-          src={Logo}
+          src={logo}
           alt="Logo"
-          className={`transition-all duration-300 ${
-            isOpen ? "w-30" : "w-24"
-          }`}
+          className={`transition-all duration-300 ${isOpen ? "w-30" : "w-24"}`}
         />
       </div>
       <ul className="space-y-4">
         <li>
           <Link to="/dashboard" className="flex items-center gap-3 hover:opacity-80">
-            <LayoutDashboard size={20} />
-            {isOpen && <span>Dashboard</span>}
+            <BarChart2 size={20} />
+            {isOpen && <span>Prediction</span>}
           </Link>
         </li>
         <li>
           <div className="flex items-center gap-3">
-            <Inbox size={20} />
-            {isOpen && <span>Inbox</span>}
+            <Database size={20} />
+            {isOpen && <span>Data Sources</span>}
           </div>
         </li>
         <li>
           <div className="flex items-center gap-3">
-            <Users size={20} />
-            {isOpen && <span>Users</span>}
+            <LineChart size={20} />
+            {isOpen && <span>Analysis</span>}
           </div>
         </li>
         <li>
           <div className="flex items-center gap-3">
-            <ShoppingBag size={20} />
-            {isOpen && <span>Products</span>}
+            <Wallet size={20} />
+            {isOpen && <span>Budget Planning</span>}
           </div>
         </li>
         <li>
