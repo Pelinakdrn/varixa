@@ -1,0 +1,81 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Company {
+  id      String   @id @default(uuid())
+  name    String
+  users   User[]
+}
+
+model User {
+  id              String           @id @default(uuid())
+  email           String           @unique
+  password        String
+  twoFactorSecret String?          // 2FA secret
+  is2FAEnabled    Boolean          @default(false) // 2FA açık mı
+  companyId       String
+  company         Company          @relation(fields: [companyId], references: [id])
+
+  loginActivities LoginActivity[]
+  uploadedFiles   UploadedFile[]
+  predictions     Prediction[]
+  budgets         Budget[]
+  chatMessages    ChatMessage[]
+}
+
+model LoginActivity {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  timestamp DateTime @default(now())
+}
+
+model UploadedFile {
+  id          String   @id @default(uuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  filename    String
+  startDate   DateTime
+  endDate     DateTime
+  uploadType  String   // örn: 'raw', 'output'
+  season      String?
+  product     String?
+}
+
+model Prediction {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  filename  String
+  product   String
+  season    String
+  startDate DateTime
+  endDate   DateTime
+  createdAt DateTime @default(now())
+}
+
+model Budget {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  filename  String
+  season    String
+  product   String
+  startDate DateTime
+  endDate   DateTime
+  createdAt DateTime @default(now())
+}
+
+model ChatMessage {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  message   String
+  createdAt DateTime @default(now())
+}
