@@ -3,17 +3,28 @@ import { useAuth } from "../../components/contexts/AuthContext";
 import Input from "../ui/Input";
 import Checkbox from "../ui/Checkbox";
 import Button from "../ui/Button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../../css/hoverUnderline.css";
 
 const LoginForm = () => {
   const { login } = useAuth();
-  const [username, setUsername] = useState("");
+  const navigate = useNavigate();
+
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    login(username, password); // şimdilik otomatik geçiş yapar
+
+    const result = await login(email, password);
+
+    if ("requires2FA" in result && result.requires2FA) {
+      navigate("/verify-2fa", { state: { userId: result.userId } });
+    } else if ("success" in result && result.success) {
+      navigate("/dashboard");
+    } else if ("message" in result) {
+      alert(result.message);
+    }
   };
 
   return (
@@ -25,11 +36,11 @@ const LoginForm = () => {
 
       <form onSubmit={handleSubmit}>
         <Input
-          label="Username"
-          name="username"
-          placeholder="Enter your username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          label="Email"
+          name="email"
+          placeholder="Enter your email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
         <Input
           label="Password"
@@ -51,11 +62,7 @@ const LoginForm = () => {
         </div>
 
         <div className="flex justify-center items-center gap-4">
-          <Button
-            type="submit"
-            variant="custom"
-            className="hover-underline"
-          >
+          <Button type="submit" variant="custom" className="hover-underline">
             Log in
           </Button>
         </div>

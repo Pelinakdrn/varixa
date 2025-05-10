@@ -8,19 +8,19 @@ datasource db {
 }
 
 model Company {
-  id      String   @id @default(uuid())
-  name    String
-  users   User[]
+  id    String @id @default(uuid())
+  name  String
+  users User[]
 }
 
 model User {
-  id              String           @id @default(uuid())
-  email           String           @unique
+  id              String  @id @default(uuid())
+  email           String  @unique
   password        String
-  twoFactorSecret String?          // 2FA secret
-  is2FAEnabled    Boolean          @default(false) // 2FA açık mı
+  twoFactorSecret String? // 2FA secret
+  is2FAEnabled    Boolean @default(false) // 2FA açık mı
   companyId       String
-  company         Company          @relation(fields: [companyId], references: [id])
+  company         Company @relation(fields: [companyId], references: [id])
 
   loginActivities LoginActivity[]
   uploadedFiles   UploadedFile[]
@@ -37,15 +37,15 @@ model LoginActivity {
 }
 
 model UploadedFile {
-  id          String   @id @default(uuid())
-  userId      String
-  user        User     @relation(fields: [userId], references: [id])
-  filename    String
-  startDate   DateTime
-  endDate     DateTime
-  uploadType  String   // örn: 'raw', 'output'
-  season      String?
-  product     String?
+  id         String   @id @default(uuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+  filename   String
+  startDate  DateTime
+  endDate    DateTime
+  uploadType String // örn: 'raw', 'output'
+  season     String?
+  product    String?
 }
 
 model Prediction {

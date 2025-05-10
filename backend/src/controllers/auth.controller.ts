@@ -10,3 +10,8 @@ export const login = async (req: Request, res: Response) => {
   const result = await AuthService.loginUser(req.body);
   res.status(result.status).json(result.data);
 };
+
+export const verify2FA = async (req: Request, res: Response) => {
+  const result = await AuthService.verifyTwoFactorCode(req.body);
+  res.status(result.status).json(result.data);
+};
