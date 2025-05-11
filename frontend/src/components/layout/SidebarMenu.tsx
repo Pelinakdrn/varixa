@@ -34,10 +34,10 @@ const SidebarMenu: React.FC<SidebarProps> = ({ isOpen }) => {
           </Link>
         </li>
         <li>
-          <div className="flex items-center gap-3">
+          <Link to="/data-sources" className="flex items-center gap-3 hover:opacity-80">
             <Database size={20} />
             {isOpen && <span>Data Sources</span>}
-          </div>
+          </Link>
         </li>
         <li>
           <div className="flex items-center gap-3">

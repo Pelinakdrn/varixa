@@ -18,11 +18,9 @@ const LoginForm = () => {
 
     const result = await login(email, password);
 
-    if ("requires2FA" in result && result.requires2FA) {
-      navigate("/verify-2fa", { state: { userId: result.userId } });
-    } else if ("success" in result && result.success) {
+    if (result.success) {
       navigate("/dashboard");
-    } else if ("message" in result) {
+    } else {
       alert(result.message);
     }
   };

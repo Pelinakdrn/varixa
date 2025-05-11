@@ -14,7 +14,7 @@ export const registerUser = async (body: {
   try {
     const hashedPassword = await bcrypt.hash(body.password, 10);
 
-    const secret = speakeasy.generateSecret({ name: "Varixa App 2FA" });
+    const secret = speakeasy.generateSecret({ name: "Varixa App" });
 
     const user = await prisma.user.create({
       data: {
@@ -24,6 +24,7 @@ export const registerUser = async (body: {
           connect: { id: body.companyId },
         },
         twoFactorSecret: secret.base32,
+        is2FAEnabled: false, 
       },
     });
 
@@ -57,12 +58,47 @@ export const loginUser = async (body: { email: string; password: string }) => {
     if (!isPasswordValid)
       return { status: 401, data: { message: "Şifre hatalı" } };
 
-    // Şifre doğruysa, frontend 2FA ekranına yönlendirir
+    if (!user.twoFactorSecret) {
+      return { status: 400, data: { message: "2FA verisi eksik" } };
+    }
+
+    // Eğer 2FA daha önce etkinleştirildiyse, QR göstermeye gerek yok
+    if (user.is2FAEnabled) {
+      return {
+        status: 200,
+        data: {
+          message: "Şifre doğru, 2FA doğrulama gerekiyor",
+          userId: user.id,
+          user: {
+            id: user.id,
+            email: user.email,
+            companyId: user.companyId,
+          },
+          requires2FA: true,
+        },
+      };
+    }
+
+    // İlk giriş — QR kod oluştur ve göster
+    const otpAuthUrl = speakeasy.otpauthURL({
+      secret: user.twoFactorSecret,
+      label: user.email,
+      issuer: "Varixa App",
+      encoding: "base32",
+    });
+
     return {
       status: 200,
       data: {
-        message: "Şifre doğru, 2FA doğrulama gerekiyor",
+        message: "İlk giriş, 2FA kuruluyor",
         userId: user.id,
+        user: {
+          id: user.id,
+          email: user.email,
+          companyId: user.companyId,
+        },
+        otpAuthUrl,
+        requires2FA: true,
       },
     };
   } catch (error) {
@@ -93,6 +129,13 @@ export const verifyTwoFactorCode = async (body: {
 
     if (!verified)
       return { status: 401, data: { message: "Geçersiz doğrulama kodu" } };
+
+    if (!user.is2FAEnabled) {
+      await prisma.user.update({
+        where: { id: user.id },
+        data: { is2FAEnabled: true },
+      });
+    }
 
     const token = jwt.sign(
       { userId: user.id, companyId: user.companyId },
