@@ -1,0 +1,73 @@
+import { Request, Response } from "express";
+import { prisma } from "../prisma/client";
+import fs from "fs";
+import path from "path";
+
+interface MulterRequest extends Request {
+  file?: {
+    filename: string;
+    path: string;
+    mimetype: string;
+  };
+}
+
+export const uploadFileController = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const multerReq = req as MulterRequest;
+    const file = multerReq.file;
+
+    if (!file) {
+      res.status(400).json({ message: "Dosya bulunamadı" });
+      return;
+    }
+
+    const { startDate, endDate, uploadType, season, product, userId } = req.body;
+
+    if (!startDate || !endDate || !uploadType || !userId) {
+      res.status(400).json({ message: "Gerekli alanlar eksik" });
+      return;
+    }
+
+    const fileData = fs.readFileSync(file.path);
+
+    await prisma.uploadedFile.create({
+      data: {
+        filename: file.filename,
+        fileData,
+        startDate: new Date(startDate),
+        endDate: new Date(endDate),
+        uploadType,
+        user: { connect: { id: userId } },
+        season: season || undefined,
+        product: product || undefined,
+      },
+    });
+
+    res.status(200).json({ message: "Dosya başarıyla yüklendi" });
+  } catch (error) {
+    console.error("Yükleme hatası:", error);
+    res.status(500).json({ message: "Sunucu hatası" });
+  }
+};
+
+export const getFileController = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { filename } = req.params;
+
+    const fileRecord = await prisma.uploadedFile.findUnique({
+      where: { id: filename },
+    });
+
+    if (!fileRecord || !fileRecord.fileData) {
+      res.status(404).json({ message: "Dosya bulunamadı" });
+      return;
+    }
+
+    res.setHeader("Content-Disposition", `attachment; filename="${filename}"`);
+    res.setHeader("Content-Type", "application/octet-stream");
+    res.send(fileRecord.fileData);
+  } catch (error) {
+    console.error("İndirme hatası:", error);
+    res.status(500).json({ message: "Sunucu hatası" });
+  }
+};

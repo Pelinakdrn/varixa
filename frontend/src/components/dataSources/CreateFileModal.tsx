@@ -1,4 +1,6 @@
 import { useState } from "react";
+import axios from "axios";
+import { useAuth } from "../contexts/AuthContext"; // AuthContext'ten kullanıcıyı alacağız
 
 const CreateFileModal = ({
   onClose,
@@ -7,8 +9,8 @@ const CreateFileModal = ({
   onClose: () => void;
   onSubmit: (file: any) => void;
 }) => {
+  const { auth } = useAuth(); // auth içinden userId al
   const [form, setForm] = useState({
-    filename: "",
     startDate: "",
     endDate: "",
     uploadType: "raw",
@@ -16,13 +18,44 @@ const CreateFileModal = ({
     product: "",
   });
 
+  const [file, setFile] = useState<File | null>(null);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files?.[0]) {
+      setFile(e.target.files[0]);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit({ id: Date.now().toString(), ...form });
+
+    if (!file) return alert("Dosya seçilmedi.");
+    if (!auth?.user?.id) return alert("Kullanıcı ID'si alınamadı.");
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("startDate", form.startDate);
+    formData.append("endDate", form.endDate);
+    formData.append("uploadType", form.uploadType);
+    formData.append("season", form.season);
+    formData.append("product", form.product);
+    formData.append("userId", auth.user.id); 
+
+    try {
+      await axios.post("http://localhost:4000/api/file/upload", formData);
+      onSubmit({
+        id: Date.now().toString(),
+        filename: file.name,
+        ...form,
+      });
+    } catch (err) {
+      console.error(err);
+      alert("Yükleme başarısız.");
+    }
   };
 
   return (
@@ -31,12 +64,10 @@ const CreateFileModal = ({
         <h2 className="text-xl font-bold mb-4">Upload File</h2>
         <form onSubmit={handleSubmit} className="space-y-3">
           <input
-            type="text"
-            name="filename"
-            placeholder="File name"
-            value={form.filename}
-            onChange={handleChange}
-            className="w-full px-3 py-2 rounded bg-transparent border border-zinc-600"
+            type="file"
+            accept=".xlsx, .xls"
+            onChange={handleFileChange}
+            className="w-full text-sm text-gray-300"
           />
           <input
             type="date"
@@ -77,7 +108,6 @@ const CreateFileModal = ({
             onChange={handleChange}
             className="w-full px-3 py-2 rounded bg-transparent border border-zinc-600"
           />
-
           <div className="flex justify-end gap-2">
             <button
               type="button"
