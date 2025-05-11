@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Plus } from "lucide-react";
+import { Plus, Download } from "lucide-react";
 import CreateFileModal from "../components/dataSources/CreateFileModal";
 
 const DataSources = () => {
@@ -12,6 +12,7 @@ const DataSources = () => {
       uploadType: "raw",
       season: "Spring",
       product: "Tomato",
+      fileBlob: null,
     },
   ]);
   const [showModal, setShowModal] = useState(false);
@@ -21,13 +22,22 @@ const DataSources = () => {
     setShowModal(false);
   };
 
+  const handleDownload = (file: any) => {
+    if (!file.fileBlob) return;
+    const url = URL.createObjectURL(file.fileBlob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = file.filename;
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
-    <div className="p-6 text-white">
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold">Data Sources</h1>
+    <div className="p-6 text-white min-h-screen bg-[#0b1222]">
+      <div className="flex justify-end mb-4">
         <button
           onClick={() => setShowModal(true)}
-          className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md"
+          className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md text-white"
         >
           <Plus size={18} />
           Create
@@ -35,7 +45,7 @@ const DataSources = () => {
       </div>
 
       <div className="overflow-x-auto">
-        <table className="min-w-full text-sm border border-zinc-700">
+        <table className="min-w-full text-sm border border-zinc-700 text-white">
           <thead className="bg-zinc-800 text-left">
             <tr>
               <th className="p-3 border-b">File Name</th>
@@ -44,6 +54,7 @@ const DataSources = () => {
               <th className="p-3 border-b">Upload Type</th>
               <th className="p-3 border-b">Season</th>
               <th className="p-3 border-b">Product</th>
+              <th className="p-3 border-b">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -55,6 +66,14 @@ const DataSources = () => {
                 <td className="p-3 border-b">{file.uploadType}</td>
                 <td className="p-3 border-b">{file.season}</td>
                 <td className="p-3 border-b">{file.product}</td>
+                <td className="p-3 border-b">
+                  <button
+                    onClick={() => handleDownload(file)}
+                    className="text-blue-400 hover:underline flex items-center gap-1"
+                  >
+                    <Download size={16} /> Download
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
@@ -62,7 +81,10 @@ const DataSources = () => {
       </div>
 
       {showModal && (
-        <CreateFileModal onClose={() => setShowModal(false)} onSubmit={handleAddFile} />
+        <CreateFileModal
+          onClose={() => setShowModal(false)}
+          onSubmit={handleAddFile}
+        />
       )}
     </div>
   );

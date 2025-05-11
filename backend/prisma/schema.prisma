@@ -43,10 +43,13 @@ model UploadedFile {
   filename   String
   startDate  DateTime
   endDate    DateTime
-  uploadType String // örn: 'raw', 'output'
+  uploadType String
   season     String?
   product    String?
+
+  fileData   Bytes 
 }
+
 
 model Prediction {
   id        String   @id @default(uuid())
