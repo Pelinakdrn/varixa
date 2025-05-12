@@ -2,19 +2,11 @@ import { Request, Response } from "express";
 import { prisma } from "../prisma/client";
 import fs from "fs";
 import path from "path";
-
-interface MulterRequest extends Request {
-  file?: {
-    filename: string;
-    path: string;
-    mimetype: string;
-  };
-}
+import { Multer } from "multer";
 
 export const uploadFileController = async (req: Request, res: Response): Promise<void> => {
   try {
-    const multerReq = req as MulterRequest;
-    const file = multerReq.file;
+    const file = req.file as Express.Multer.File;
 
     if (!file) {
       res.status(400).json({ message: "Dosya bulunamadı" });

@@ -1,15 +1,15 @@
 // src/routes/file.routes.ts
-import express from "express";
-import multer from "multer";
+import express, { Request } from "express";
+import multer, { FileFilterCallback } from "multer";
 import path from "path";
 import { uploadFileController, getFileController } from "../controllers/file.controller";
 
 const upload = multer({
   storage: multer.diskStorage({
-    destination: (req, file, cb) => {
+    destination: (req: Request, file: Express.Multer.File, cb: (error: Error | null, destination: string) => void) => {
       cb(null, path.join(__dirname, "../../uploads"));
     },
-    filename: (req, file, cb) => {
+    filename: (req: Request, file: Express.Multer.File, cb: (error: Error | null, filename: string) => void) => {
       const uniqueName = `${Date.now()}-${file.originalname}`;
       cb(null, uniqueName);
     },
