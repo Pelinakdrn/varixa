@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { Plus, Download } from "lucide-react";
 import CreateFileModal from "../components/dataSources/CreateFileModal";
+import FilterControls from "../components/dataSources/FilterControls";
 import axios from "axios";
 
 const DataSources = () => {
   const [files, setFiles] = useState<any[]>([]);
+  const [filteredFiles, setFilteredFiles] = useState<any[]>([]);
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
@@ -12,6 +14,7 @@ const DataSources = () => {
       try {
         const res = await axios.get("http://localhost:4000/api/file");
         setFiles(res.data);
+        setFilteredFiles(res.data); // başlangıçta filtrelenmiş veriyi de yükle
       } catch (err) {
         console.error("Dosyalar alınamadı:", err);
       }
@@ -22,6 +25,7 @@ const DataSources = () => {
 
   const handleAddFile = (file: any) => {
     setFiles((prev) => [file, ...prev]);
+    setFilteredFiles((prev) => [file, ...prev]);
     setShowModal(false);
   };
 
@@ -29,9 +33,31 @@ const DataSources = () => {
     window.open(`http://localhost:4000/api/file/download/${id}`, "_blank");
   };
 
+  const handleFilterChange = (filters: {
+    filename: string;
+    season: string;
+    product: string;
+    sortOrder: "asc" | "desc";
+  }) => {
+    const filtered = [...files]
+      .filter((file) =>
+        file.filename.toLowerCase().includes(filters.filename.toLowerCase()) &&
+        file.season.toLowerCase().includes(filters.season.toLowerCase()) &&
+        file.product.toLowerCase().includes(filters.product.toLowerCase())
+      )
+      .sort((a, b) =>
+        filters.sortOrder === "asc"
+          ? new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
+          : new Date(b.startDate).getTime() - new Date(a.startDate).getTime()
+      );
+
+    setFilteredFiles(filtered);
+  };
+
   return (
     <div className="p-6 text-white">
-      <div className="flex justify-end mb-4">
+      <div className="flex justify-between mb-4">
+        <FilterControls onFilterChange={handleFilterChange} />
         <button
           onClick={() => setShowModal(true)}
           className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md"
@@ -55,7 +81,7 @@ const DataSources = () => {
             </tr>
           </thead>
           <tbody>
-            {files.map((file) => (
+            {filteredFiles.map((file) => (
               <tr key={file.id} className="hover:bg-zinc-800">
                 <td className="p-3 border-b">{file.filename}</td>
                 <td className="p-3 border-b">{file.startDate?.slice(0, 10)}</td>
