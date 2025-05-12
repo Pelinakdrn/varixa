@@ -28,7 +28,7 @@ const SidebarMenu: React.FC<SidebarProps> = ({ isOpen }) => {
       </div>
       <ul className="space-y-4">
         <li>
-          <Link to="/dashboard" className="flex items-center gap-3 hover:opacity-80">
+          <Link to="/Prediction" className="flex items-center gap-3 hover:opacity-80">
             <BarChart2 size={20} />
             {isOpen && <span>Prediction</span>}
           </Link>

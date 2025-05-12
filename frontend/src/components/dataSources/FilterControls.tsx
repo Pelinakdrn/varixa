@@ -24,7 +24,7 @@ const FilterControls = ({ onFilterChange }: Props) => {
   };
 
   return (
-    <div className="flex flex-wrap gap-4 mb-4 text-black">
+    <div className="flex flex-wrap gap-4 mb-4 text-white">
       <input
         name="filename"
         placeholder="File Name"

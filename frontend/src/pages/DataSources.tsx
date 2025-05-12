@@ -14,7 +14,7 @@ const DataSources = () => {
       try {
         const res = await axios.get("http://localhost:4000/api/file");
         setFiles(res.data);
-        setFilteredFiles(res.data); // başlangıçta filtrelenmiş veriyi de yükle
+        setFilteredFiles(res.data); 
       } catch (err) {
         console.error("Dosyalar alınamadı:", err);
       }
@@ -55,7 +55,7 @@ const DataSources = () => {
   };
 
   return (
-    <div className="p-6 text-white">
+    <div className="p-6 text-white bg-[#0b1222] min-h-screen">
       <div className="flex justify-between mb-4">
         <FilterControls onFilterChange={handleFilterChange} />
         <button
@@ -69,27 +69,27 @@ const DataSources = () => {
 
       <div className="overflow-x-auto">
         <table className="min-w-full text-sm border border-zinc-700">
-          <thead className="bg-zinc-800 text-left">
+          <thead className="bg-zinc-900 text-white">
             <tr>
-              <th className="p-3 border-b">File Name</th>
-              <th className="p-3 border-b">Start Date</th>
-              <th className="p-3 border-b">End Date</th>
-              <th className="p-3 border-b">Upload Type</th>
-              <th className="p-3 border-b">Season</th>
-              <th className="p-3 border-b">Product</th>
-              <th className="p-3 border-b">Download</th>
+              <th className="p-3 border-b border-zinc-700">File Name</th>
+              <th className="p-3 border-b border-zinc-700">Start Date</th>
+              <th className="p-3 border-b border-zinc-700">End Date</th>
+              <th className="p-3 border-b border-zinc-700">Upload Type</th>
+              <th className="p-3 border-b border-zinc-700">Season</th>
+              <th className="p-3 border-b border-zinc-700">Product</th>
+              <th className="p-3 border-b border-zinc-700">Download</th>
             </tr>
           </thead>
           <tbody>
             {filteredFiles.map((file) => (
               <tr key={file.id} className="hover:bg-zinc-800">
-                <td className="p-3 border-b">{file.filename}</td>
-                <td className="p-3 border-b">{file.startDate?.slice(0, 10)}</td>
-                <td className="p-3 border-b">{file.endDate?.slice(0, 10)}</td>
-                <td className="p-3 border-b">{file.uploadType}</td>
-                <td className="p-3 border-b">{file.season}</td>
-                <td className="p-3 border-b">{file.product}</td>
-                <td className="p-3 border-b">
+                <td className="p-3 border-b border-zinc-700">{file.filename}</td>
+                <td className="p-3 border-b border-zinc-700">{file.startDate?.slice(0, 10)}</td>
+                <td className="p-3 border-b border-zinc-700">{file.endDate?.slice(0, 10)}</td>
+                <td className="p-3 border-b border-zinc-700">{file.uploadType}</td>
+                <td className="p-3 border-b border-zinc-700">{file.season}</td>
+                <td className="p-3 border-b border-zinc-700">{file.product}</td>
+                <td className="p-3 border-b border-zinc-700">
                   <button
                     onClick={() => handleDownload(file.id)}
                     className="bg-gray-700 hover:bg-gray-600 px-3 py-1 rounded"

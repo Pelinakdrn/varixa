@@ -7,6 +7,7 @@ import Dashboard from "./pages/Dashboard";
 import DataSources from "./pages/DataSources"; // ✅ Eklendi
 import { AuthProvider } from "./components/contexts/AuthContext";
 import Layout from "./components/layout/Layout";
+import Prediction from "./pages/Prediction";
 
 function App() {
   return (
@@ -17,8 +18,14 @@ function App() {
           <Route path="/about" element={<AboutUs />} />
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/login" element={<Login />} />
-          
-          {/* Layout içine alınan sayfalar */}
+          <Route
+            path="/prediction"
+            element={
+              <Layout>
+                <Prediction />
+              </Layout>
+              }
+          />
           <Route
             path="/dashboard"
             element={
