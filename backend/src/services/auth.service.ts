@@ -24,7 +24,7 @@ export const registerUser = async (body: {
           connect: { id: body.companyId },
         },
         twoFactorSecret: secret.base32,
-        is2FAEnabled: false, 
+        is2FAEnabled: false,
       },
     });
 
@@ -62,8 +62,8 @@ export const loginUser = async (body: { email: string; password: string }) => {
       return { status: 400, data: { message: "2FA verisi eksik" } };
     }
 
-    // Eğer 2FA daha önce etkinleştirildiyse, QR göstermeye gerek yok
     if (user.is2FAEnabled) {
+      // 2FA aktifse kullanıcıdan doğrulama beklenir
       return {
         status: 200,
         data: {
@@ -79,26 +79,24 @@ export const loginUser = async (body: { email: string; password: string }) => {
       };
     }
 
-    // İlk giriş — QR kod oluştur ve göster
-    const otpAuthUrl = speakeasy.otpauthURL({
-      secret: user.twoFactorSecret,
-      label: user.email,
-      issuer: "Varixa App",
-      encoding: "base32",
-    });
+    // 2FA etkin değilse → doğrudan token ver
+    const token = jwt.sign(
+      { userId: user.id, companyId: user.companyId },
+      JWT_SECRET,
+      { expiresIn: "1d" }
+    );
 
     return {
       status: 200,
       data: {
-        message: "İlk giriş, 2FA kuruluyor",
-        userId: user.id,
+        message: "Giriş başarılı",
+        token,
         user: {
           id: user.id,
           email: user.email,
           companyId: user.companyId,
         },
-        otpAuthUrl,
-        requires2FA: true,
+        requires2FA: false,
       },
     };
   } catch (error) {

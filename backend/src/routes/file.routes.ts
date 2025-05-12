@@ -1,4 +1,3 @@
-// src/routes/file.routes.ts
 import express, { Request } from "express";
 import multer, { FileFilterCallback } from "multer";
 import path from "path";
