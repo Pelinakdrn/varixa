@@ -1,18 +1,32 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Plus, Download } from "lucide-react";
 import CreateFileModal from "../components/dataSources/CreateFileModal";
+import axios from "axios";
 
 const DataSources = () => {
   const [files, setFiles] = useState<any[]>([]);
   const [showModal, setShowModal] = useState(false);
 
+  useEffect(() => {
+    const fetchFiles = async () => {
+      try {
+        const res = await axios.get("http://localhost:4000/api/file");
+        setFiles(res.data);
+      } catch (err) {
+        console.error("Dosyalar alınamadı:", err);
+      }
+    };
+
+    fetchFiles();
+  }, []);
+
   const handleAddFile = (file: any) => {
-    setFiles((prev) => [...prev, file]);
+    setFiles((prev) => [file, ...prev]);
     setShowModal(false);
   };
 
-  const handleDownload = (filename: string) => {
-    window.open(`http://localhost:4000/api/download/${filename}`, "_blank");
+  const handleDownload = (id: string) => {
+    window.open(`http://localhost:4000/api/file/download/${id}`, "_blank");
   };
 
   return (
@@ -44,14 +58,14 @@ const DataSources = () => {
             {files.map((file) => (
               <tr key={file.id} className="hover:bg-zinc-800">
                 <td className="p-3 border-b">{file.filename}</td>
-                <td className="p-3 border-b">{file.startDate}</td>
-                <td className="p-3 border-b">{file.endDate}</td>
+                <td className="p-3 border-b">{file.startDate?.slice(0, 10)}</td>
+                <td className="p-3 border-b">{file.endDate?.slice(0, 10)}</td>
                 <td className="p-3 border-b">{file.uploadType}</td>
                 <td className="p-3 border-b">{file.season}</td>
                 <td className="p-3 border-b">{file.product}</td>
                 <td className="p-3 border-b">
                   <button
-                    onClick={() => handleDownload(file.filename)}
+                    onClick={() => handleDownload(file.id)}
                     className="bg-gray-700 hover:bg-gray-600 px-3 py-1 rounded"
                   >
                     <Download size={16} />

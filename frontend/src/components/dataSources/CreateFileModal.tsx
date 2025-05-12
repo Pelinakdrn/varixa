@@ -1,15 +1,9 @@
 import { useState } from "react";
 import axios from "axios";
-import { useAuth } from "../contexts/AuthContext"; // AuthContext'ten kullanıcıyı alacağız
+import { useAuth } from "../contexts/AuthContext";
 
-const CreateFileModal = ({
-  onClose,
-  onSubmit,
-}: {
-  onClose: () => void;
-  onSubmit: (file: any) => void;
-}) => {
-  const { auth } = useAuth(); // auth içinden userId al
+const CreateFileModal = ({ onClose, onSubmit }: { onClose: () => void; onSubmit: (file: any) => void; }) => {
+  const { auth } = useAuth();
   const [form, setForm] = useState({
     startDate: "",
     endDate: "",
@@ -17,7 +11,6 @@ const CreateFileModal = ({
     season: "",
     product: "",
   });
-
   const [file, setFile] = useState<File | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -33,8 +26,8 @@ const CreateFileModal = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!file) return alert("Dosya seçilmedi.");
-    if (!auth?.user?.id) return alert("Kullanıcı ID'si alınamadı.");
+    if (!file) return alert("Dosya secilmedi.");
+    if (!auth?.user?.id) return alert("Kullanıcı ID'si yok.");
 
     const formData = new FormData();
     formData.append("file", file);
@@ -43,18 +36,14 @@ const CreateFileModal = ({
     formData.append("uploadType", form.uploadType);
     formData.append("season", form.season);
     formData.append("product", form.product);
-    formData.append("userId", auth.user.id); 
+    formData.append("userId", auth.user.id);
 
     try {
-      await axios.post("http://localhost:4000/api/file/upload", formData);
-      onSubmit({
-        id: Date.now().toString(),
-        filename: file.name,
-        ...form,
-      });
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/file/upload`, formData);
+      onSubmit(res.data.file); // 📌 Correct full file object from backend
     } catch (err) {
       console.error(err);
-      alert("Yükleme başarısız.");
+      alert("Yükleme başarısız");
     }
   };
 
@@ -63,57 +52,18 @@ const CreateFileModal = ({
       <div className="bg-[#0b1222] p-6 rounded-lg w-full max-w-md border border-zinc-700 text-white">
         <h2 className="text-xl font-bold mb-4">Upload File</h2>
         <form onSubmit={handleSubmit} className="space-y-3">
-          <input
-            type="file"
-            accept=".xlsx, .xls"
-            onChange={handleFileChange}
-            className="w-full text-sm text-gray-300"
-          />
-          <input
-            type="date"
-            name="startDate"
-            value={form.startDate}
-            onChange={handleChange}
-            className="w-full px-3 py-2 rounded bg-transparent border border-zinc-600"
-          />
-          <input
-            type="date"
-            name="endDate"
-            value={form.endDate}
-            onChange={handleChange}
-            className="w-full px-3 py-2 rounded bg-transparent border border-zinc-600"
-          />
-          <select
-            name="uploadType"
-            value={form.uploadType}
-            onChange={handleChange}
-            className="w-full px-3 py-2 rounded bg-transparent border border-zinc-600"
-          >
+          <input type="file" onChange={handleFileChange} className="w-full text-sm text-gray-300" />
+          <input type="date" name="startDate" value={form.startDate} onChange={handleChange} className="w-full px-3 py-2 rounded bg-transparent border border-zinc-600" />
+          <input type="date" name="endDate" value={form.endDate} onChange={handleChange} className="w-full px-3 py-2 rounded bg-transparent border border-zinc-600" />
+          <select name="uploadType" value={form.uploadType} onChange={handleChange} className="w-full px-3 py-2 rounded bg-transparent border border-zinc-600">
             <option value="raw">Raw</option>
             <option value="output">Output</option>
           </select>
-          <input
-            type="text"
-            name="season"
-            placeholder="Season"
-            value={form.season}
-            onChange={handleChange}
-            className="w-full px-3 py-2 rounded bg-transparent border border-zinc-600"
-          />
-          <input
-            type="text"
-            name="product"
-            placeholder="Product"
-            value={form.product}
-            onChange={handleChange}
-            className="w-full px-3 py-2 rounded bg-transparent border border-zinc-600"
-          />
+          <input type="text" name="season" value={form.season} onChange={handleChange} placeholder="Season" className="w-full px-3 py-2 rounded bg-transparent border border-zinc-600" />
+          <input type="text" name="product" value={form.product} onChange={handleChange} placeholder="Product" className="w-full px-3 py-2 rounded bg-transparent border border-zinc-600" />
+
           <div className="flex justify-end gap-2">
-            <button
-              type="button"
-              onClick={onClose}
-              className="px-4 py-2 rounded bg-gray-600 hover:bg-gray-500"
-            >
+            <button type="button" onClick={onClose} className="px-4 py-2 rounded bg-gray-600 hover:bg-gray-500">
               Cancel
             </button>
             <button type="submit" className="px-4 py-2 rounded bg-blue-600 hover:bg-blue-500">
