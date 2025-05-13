@@ -1,7 +1,12 @@
 import { useState } from "react";
 import axios from "axios";
 
-const PredictStep1 = ({ onMetaFetched }: { onMetaFetched: (meta: any) => void }) => {
+type Props = {
+  onMetaFetched: (meta: any) => void;
+  onFileSelect: (file: File) => void;
+};
+
+const PredictStep1 = ({ onMetaFetched, onFileSelect }: Props) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -11,6 +16,7 @@ const PredictStep1 = ({ onMetaFetched }: { onMetaFetched: (meta: any) => void })
     if (!file) return;
 
     setSelectedFile(file);
+    onFileSelect(file); // dosyayı parent'a bildir
     setLoading(true);
     setError("");
 
