@@ -4,10 +4,9 @@ import AboutUs from "./pages/AboutUs";
 import BlogPage from "./pages/blog";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
-import DataSources from "./pages/DataSources"; // ✅ Eklendi
 import { AuthProvider } from "./components/contexts/AuthContext";
 import Layout from "./components/layout/Layout";
-import Prediction from "./pages/Prediction";
+import PredictionPage from  "./pages/PredictionPage";
 
 function App() {
   return (
@@ -19,14 +18,6 @@ function App() {
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/login" element={<Login />} />
           <Route
-            path="/prediction"
-            element={
-              <Layout>
-                <Prediction />
-              </Layout>
-              }
-          />
-          <Route
             path="/dashboard"
             element={
               <Layout>
@@ -35,13 +26,14 @@ function App() {
             }
           />
           <Route
-            path="/data-sources"
+            path="/prediction"
             element={
               <Layout>
-                <DataSources />
+                <PredictionPage />
               </Layout>
             }
           />
+          <Route path="*" element={<h1>404 Not Found</h1>} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>
