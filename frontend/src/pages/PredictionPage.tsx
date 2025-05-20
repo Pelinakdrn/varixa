@@ -5,17 +5,17 @@ import PredictionResult from "../components/PredictionResult";
 import * as ML from "../../api/ml";
 
 export default function PredictionPage() {
-  const [file, setFile] = useState<File|null>(null);
+  const [file, setFile] = useState<File | null>(null);
   const [types, setTypes] = useState<string[]>([]);
   const [productType, setProductType] = useState("");
   const [model, setModel] = useState("xgboost");
-  const [result, setResult] = useState<Record<string,number>|null>(null);
+  const [result, setResult] = useState<Record<string, number>[] | null>(null);
 
   const handlePreview = async (f: File) => {
     try {
       const { data } = await ML.preview(f);
       setTypes(data.productTypes);
-      setProductType(data.productTypes[0]||"");
+      setProductType(data.productTypes[0] || "");
     } catch {
       alert("Metadata alınırken hata");
     }
@@ -40,10 +40,12 @@ export default function PredictionPage() {
         <select
           className="p-2 bg-zinc-800 text-white rounded"
           value={productType}
-          onChange={e => setProductType(e.target.value)}
+          onChange={(e) => setProductType(e.target.value)}
         >
-          {types.map(t => (
-            <option key={t} value={t}>{t}</option>
+          {types.map((t) => (
+            <option key={t} value={t}>
+              {t}
+            </option>
           ))}
         </select>
         <button

@@ -1,16 +1,10 @@
 import pandas as pd
 
 def add_common_features(df: pd.DataFrame, target: str) -> pd.DataFrame:
-    """
-    RandomForest için tek lag özelliği oluşturur.
-    """
     df["lag_1"] = df[target].shift(1)
     return df
 
 def add_xgboost_features(df: pd.DataFrame, target: str) -> pd.DataFrame:
-    """
-    XGBoost için lag_1, lag_2, rolling_mean_3, rolling_std_3 oluşturur.
-    """
     df["lag_1"] = df[target].shift(1)
     df["lag_2"] = df[target].shift(2)
     df["rolling_mean_3"] = df[target].rolling(window=3).mean()
@@ -18,9 +12,6 @@ def add_xgboost_features(df: pd.DataFrame, target: str) -> pd.DataFrame:
     return df
 
 def add_lightgbm_features(df: pd.DataFrame, target: str) -> pd.DataFrame:
-    """
-    LightGBM için XGBoost özelliklerine ek olarak ay ve hafta bilgisi ekler.
-    """
     df = add_xgboost_features(df, target)
     df["month"] = df["date_index"].dt.month
     df["week"]  = df["date_index"].dt.isocalendar().week

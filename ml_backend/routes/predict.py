@@ -91,3 +91,48 @@ async def preview_prediction(
 ):
     # frontend'de sadece file gönderildiği için varsayılan değerler kullanılıyor
     return await run_prediction(file, productType, target, trainSplit, model)
+from fastapi import APIRouter, UploadFile, File, Form, HTTPException
+import pandas as pd
+from io import BytesIO
+from ..utils import model_utils
+
+router = APIRouter()
+
+@router.post("/preview")
+async def preview(file: UploadFile = File(...)):
+    try:
+        contents = await file.read()
+        df = pd.read_excel(BytesIO(contents))
+        if df.empty:
+            raise HTTPException(status_code=400, detail="Dosya boş")
+        columns = df.columns.tolist()
+        return {"productTypes": columns}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Metadata alınamadı: {str(e)}")
+
+
+@router.post("/run")
+async def run_predict(
+    file: UploadFile = File(...),
+    productType: str = Form(...),
+    model: str = Form(...)
+):
+    try:
+        contents = await file.read()
+        df = pd.read_excel(BytesIO(contents))
+        df = df.dropna()
+
+        if model.lower() == "xgboost":
+            df = model_utils.add_xgboost_features(df, productType)
+        elif model.lower() == "lightgbm":
+            df = model_utils.add_lightgbm_features(df, productType)
+        else:
+            df = model_utils.add_common_features(df, productType)
+
+        # Basit dummy prediction
+        df["prediction"] = df[productType].shift(-1).fillna(method="ffill")
+
+        results = df[["prediction"]].to_dict(orient="records")
+        return results[-5:]  # Son 5 tahmini gönder
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Tahmin hatası: {str(e)}")
