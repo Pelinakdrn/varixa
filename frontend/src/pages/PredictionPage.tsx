@@ -3,6 +3,7 @@ import FileUploader from "../components/FileUploader";
 import ModelSelector from "../components/ModelSelector";
 import PredictionResult from "../components/PredictionResult";
 import * as ML from "../../api/ml";
+import FuturePredictForm from "../components/FuturePredictForm";
 
 export default function PredictionPage() {
   const [file, setFile] = useState<File | null>(null);
@@ -141,6 +142,8 @@ export default function PredictionPage() {
       </div>
 
       <PredictionResult results={result} />
+      <FuturePredictForm file={file} productValues={productValues} columns={columns} />
+
     </div>
   );
 }
