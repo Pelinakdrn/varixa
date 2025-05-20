@@ -8,8 +8,12 @@ export default function PredictionPage() {
   const [file, setFile] = useState<File | null>(null);
   const [columns, setColumns] = useState<string[]>([]);
   const [target, setTarget] = useState("");
-  const [productGroup, setProductGroup] = useState("nos");
   const [model, setModel] = useState("xgboost");
+  const [productGroup, setProductGroup] = useState("nos");
+
+  const [productValues, setProductValues] = useState<string[]>([]);
+  const [selectedProduct, setSelectedProduct] = useState("");
+
   const [result, setResult] = useState<null | {
     metrics: Record<string, number>;
     last_predictions: number[];
@@ -21,13 +25,18 @@ export default function PredictionPage() {
       setFile(f);
       setColumns(data.columns || []);
       setTarget(data.columns?.[0] || "");
+
+      // 🟩 Ürün değerleri alınır
+      const products = data.productValues || [];
+      setProductValues(products);
+      setSelectedProduct(products[0] || "");
     } catch {
       alert("Metadata alınırken hata");
     }
   };
 
   const handlePredict = async () => {
-    if (!file || !target) return alert("Lütfen dosya ve hedef değişkeni seçin");
+    if (!file || !target) return alert("Lütfen gerekli alanları doldurun.");
 
     try {
       const formData = new FormData();
@@ -35,6 +44,10 @@ export default function PredictionPage() {
       formData.append("productGroup", productGroup);
       formData.append("target", target);
       formData.append("modelType", model);
+
+      if (selectedProduct) {
+        formData.append("selectedProduct", selectedProduct);
+      }
 
       const { data } = await ML.runPredict(formData);
       setResult(data);
@@ -49,9 +62,8 @@ export default function PredictionPage() {
 
       <FileUploader onFile={handlePreview} onPreview={handlePreview} />
 
-      {/* Seçim alanları her zaman gözüksün */}
       <div className="mt-6 flex flex-col gap-4">
-        <div className="flex gap-4 items-center">
+        <div className="flex gap-4 items-center flex-wrap">
           <select
             className="p-2 bg-zinc-800 rounded"
             value={productGroup}
@@ -80,6 +92,21 @@ export default function PredictionPage() {
               ))
             )}
           </select>
+
+          {/* ✅ Ürün seçim kutusu düzgün render edilir */}
+          {productValues.length > 0 && (
+            <select
+              className="p-2 bg-zinc-800 rounded"
+              value={selectedProduct}
+              onChange={(e) => setSelectedProduct(e.target.value)}
+            >
+              {productValues.map((val) => (
+                <option key={val} value={val}>
+                  {val}
+                </option>
+              ))}
+            </select>
+          )}
 
           <button
             onClick={handlePredict}

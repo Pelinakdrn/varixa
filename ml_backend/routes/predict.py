@@ -11,14 +11,17 @@ router = APIRouter()
 
 REQUIRED_COLUMNS = [
     'date_index', 'Özel_günler',
-    'Ortalama Avg Temperature (°C)', 'Ortalama Avg Humidity (%)'
+    'Ortalama Avg Temperature (°C)', 'Ortalama Avg Humidity (%)', 'Ürün Cinsi'
 ]
 
 @router.post("/preview")
 async def preview_excel(file: UploadFile = File(...)):
     try:
         df = pd.read_excel(BytesIO(await file.read()))
-        return {"columns": df.columns.tolist()}
+        return {
+            "columns": df.columns.tolist(),
+            "productValues": df["Ürün Cinsi"].dropna().unique().tolist() if "Ürün Cinsi" in df.columns else []
+        }
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Önizleme hatası: {str(e)}")
 
@@ -28,17 +31,20 @@ async def run_model(
     file: UploadFile = File(...),
     productGroup: str = Form(...),
     modelType: str = Form(...),
-    target: str = Form(...)
+    target: str = Form(...),
+    selectedProduct: str = Form(None)
 ):
     try:
         df = pd.read_excel(BytesIO(await file.read()))
 
-        # Gerekli kolon kontrolü
         for col in REQUIRED_COLUMNS + [target]:
             if col not in df.columns:
                 raise HTTPException(status_code=400, detail=f"Gerekli kolon eksik: {col}")
 
-        # Tarihsel ve zamansal özellikler
+        # ∅ Filtrele ürün bazlı
+        if selectedProduct and "Ürün Cinsi" in df.columns:
+            df = df[df["Ürün Cinsi"] == selectedProduct]
+
         df['date_index'] = pd.to_datetime(df['date_index'])
         df['year'] = df['date_index'].dt.year
         df['month'] = df['date_index'].dt.month
@@ -48,7 +54,6 @@ async def run_model(
         df['is_end_of_year'] = df['week'].astype(int).isin(range(50, 54)).astype(int)
         df['is_special_day'] = df['Özel_günler'].astype(str).ne("0").astype(int)
 
-        # Zaman serisi özellikleri
         df['lag_1'] = df[target].shift(1)
         df['lag_2'] = df[target].shift(2)
         df['sales_diff_1'] = df[target].diff()
@@ -63,7 +68,6 @@ async def run_model(
             'is_summer', 'is_start_of_year', 'is_end_of_year', 'is_special_day', 'month'
         ]
 
-        # Eğitim ve test ayırımı
         train_df = df[df['year'].isin([2016, 2017])]
         test_df = df[df['year'] == 2018]
 
@@ -75,7 +79,6 @@ async def run_model(
         X_test = test_df[feature_cols]
         y_test = test_df[target]
 
-        # Model kurulumu - RF
         rf_model = GridSearchCV(
             estimator=RandomForestRegressor(random_state=42),
             param_grid={
@@ -84,12 +87,11 @@ async def run_model(
                 'min_samples_leaf': [5, 10],
                 'max_features': ['sqrt', 0.5],
             },
-            scoring='neg_root_mean_squared_error',
+            scoring='neg_mean_squared_error',
             cv=5,
             n_jobs=-1
         ).fit(X_train, y_train).best_estimator_
 
-        # Model kurulumu - XGBoost
         xgb_model = XGBRegressor(
             objective='reg:squarederror',
             random_state=42,
@@ -103,7 +105,6 @@ async def run_model(
         )
         xgb_model.fit(X_train, y_train)
 
-        # Tahmin
         if modelType == "xgboost":
             y_pred_train = xgb_model.predict(X_train)
             y_pred_test = xgb_model.predict(X_test)
@@ -120,10 +121,11 @@ async def run_model(
                 "Test MAE": mean_absolute_error(y_test, y_pred_test),
                 "Train R2": r2_score(y_train, y_pred_train),
                 "Test R2": r2_score(y_test, y_pred_test),
-                "Accuracy (%)": round(100 * (1 - mean_absolute_error(y_test, y_pred_test) / y_test.mean()), 2)
+                "Correctness (%)": round(100 * (1 - mean_absolute_error(y_test, y_pred_test) / y_test.mean()), 2)
             },
             "last_predictions": y_pred_test[-5:].tolist()
         }
+
     except Exception as e:
-        print("💥 Backend Hatası:", traceback.format_exc())
+        print("\U0001f4a5 Backend Hatası:", traceback.format_exc())
         raise HTTPException(status_code=500, detail=f"Model hatası: {str(e)}")
