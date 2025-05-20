@@ -8,6 +8,7 @@ export default function FileUploader({
   onPreview: (f: File) => void;
 }) {
   const [name, setName] = useState("");
+
   const handle = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0];
     if (!f) return;
@@ -15,6 +16,7 @@ export default function FileUploader({
     onFile(f);
     onPreview(f);
   };
+
   return (
     <div className="border-2 border-dashed p-6 rounded text-center">
       <input
