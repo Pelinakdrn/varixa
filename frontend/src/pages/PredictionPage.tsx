@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import FileUploader from "../components/FileUploader";
 import ModelSelector from "../components/ModelSelector";
 import PredictionResult from "../components/PredictionResult";
@@ -19,6 +19,20 @@ export default function PredictionPage() {
     last_predictions: number[];
   }>(null);
 
+  const [loading, setLoading] = useState(false);
+  const [dots, setDots] = useState(".");
+
+  // 🔁 Nokta animasyonu
+  useEffect(() => {
+    if (!loading) return;
+
+    const interval = setInterval(() => {
+      setDots((prev) => (prev.length >= 3 ? "." : prev + "."));
+    }, 500);
+
+    return () => clearInterval(interval);
+  }, [loading]);
+
   const handlePreview = async (f: File) => {
     try {
       const { data } = await ML.preview(f);
@@ -26,7 +40,6 @@ export default function PredictionPage() {
       setColumns(data.columns || []);
       setTarget(data.columns?.[0] || "");
 
-      // 🟩 Ürün değerleri alınır
       const products = data.productValues || [];
       setProductValues(products);
       setSelectedProduct(products[0] || "");
@@ -37,6 +50,7 @@ export default function PredictionPage() {
 
   const handlePredict = async () => {
     if (!file || !target) return alert("Lütfen gerekli alanları doldurun.");
+    setLoading(true);
 
     try {
       const formData = new FormData();
@@ -53,6 +67,8 @@ export default function PredictionPage() {
       setResult(data);
     } catch {
       alert("Tahmin sırasında hata oluştu.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -93,7 +109,6 @@ export default function PredictionPage() {
             )}
           </select>
 
-          {/* ✅ Ürün seçim kutusu düzgün render edilir */}
           {productValues.length > 0 && (
             <select
               className="p-2 bg-zinc-800 rounded"
@@ -110,11 +125,18 @@ export default function PredictionPage() {
 
           <button
             onClick={handlePredict}
-            className="px-4 py-2 bg-pink-500 rounded"
-            disabled={!file || !target}
+            className="px-4 py-2 bg-pink-500 rounded disabled:opacity-50"
+            disabled={!file || !target || loading}
           >
             Predict
           </button>
+
+          {/* ⏳ Yükleniyor yazısı */}
+          {loading && (
+            <span className="ml-2 text-sm text-gray-400">
+              Model is running{dots}
+            </span>
+          )}
         </div>
       </div>
 
