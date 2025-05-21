@@ -1,23 +1,23 @@
 const faqData = [
   {
-    title: "How can I create an account?",
+    title: "How can I make a prediction?",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      "To evaluate model performance, go to the prediction section and select a model, product group, and target variable.",
   },
   {
-    title: "Is there a mobile app available?",
+    title: "How can I generate future predictions?",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      "Select a model, product group, and target variable. The system will generate an 8-week forecast which you can download as an Excel file.",
   },
   {
-    title: "How can I reset my password?",
+    title: "How do I log in?",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      "You can log in using the email and password provided by our team. It is not possible to create an account or change the password manually.",
   },
   {
-    title: "How do I update my account information?",
+    title: "Is it secure?",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      "Yes, all passwords are securely hashed before being stored in our system.",
   },
 ];
 
