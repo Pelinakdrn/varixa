@@ -1,25 +1,25 @@
-import aiImg from "../assets/comp.png";
-import dataImg from "../assets/comp.png";
-import mlImg from "../assets/comp.png";
+import forcaste from "../assets/forcaste.png";
+import mann from "../assets/mann.png";
+import womann from "../assets/womann.png";
 
 
 const InfoCards = () => {
     const cards = [
       {
-        title: "AI Chat Bot",
-        description: "Analyze your data with ai chatbot and take insparations.",
-        image: aiImg,
+        title: "Sales Forecasting for Product Groups",
+        description: "Save time and improve your forecasting accuracy by generating separate predictions for each product group.",
+        image: womann,
       },
       {
-        title: "Sales Prediction",
-        description: "Upload your data and get predictions.",
-        image: dataImg,
+        title: "Seasonal Sales Forecasting",
+        description: "Forecast your sales by experimenting with different ML models for your seasonal products.",
+        image: forcaste,
       },
       {
-        title: "Budget Planning",
-        description: "Plan your budget.",
-        image: mlImg,
-      },
+        title: "Model Performance Analysis",
+        description: "Train your data with different models before making future forecasts and analyze which model performs best.",
+        image: mann,
+      }
     ];
   
     return (

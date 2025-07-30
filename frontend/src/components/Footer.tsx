@@ -33,32 +33,19 @@ const Footer: React.FC = () => {
       <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
         <div className="md:flex md:justify-between">
           <div className="mb-6 md:mb-0">
-            <a href="https://flowbite.com/" className="flex items-center">
-              <img
-                src="https://flowbite.com/docs/images/logo.svg"
-                className="h-8 me-3"
-                alt="FlowBite Logo"
-              />
+              
               <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
                 Varixa
               </span>
-            </a>
           </div>
           <div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
             <FooterColumn
               title="Resources"
               links={[
-                { label: "Flowbite", href: "https://flowbite.com/" },
                 { label: "Tailwind CSS", href: "https://tailwindcss.com/" },
               ]}
             />
-            <FooterColumn
-              title="Follow us"
-              links={[
-                { label: "Github", href: "https://github.com/themesberg/flowbite" },
-                { label: "Discord", href: "https://discord.gg/4eeurUVvTy" },
-              ]}
-            />
+
             <FooterColumn
               title="Legal"
               links={[
