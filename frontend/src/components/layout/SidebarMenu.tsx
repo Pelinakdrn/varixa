@@ -1,9 +1,8 @@
 import {
   BarChart2,
-  LineChart,
   LogOut,
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.png";
 
 interface SidebarProps {
@@ -11,6 +10,16 @@ interface SidebarProps {
 }
 
 const SidebarMenu: React.FC<SidebarProps> = ({ isOpen }) => {
+  const navigate = useNavigate();
+
+  const handleSignOut = () => {
+    // Burada varsa auth temizliği yap
+    // örn: localStorage.removeItem("token");
+
+    // Doğru yönlendirme root (WelcomePage)
+    navigate("/");
+  };
+
   return (
     <aside
       className={`bg-[#0b1222] text-white h-screen p-4 pt-6 transition-all duration-300 ${
@@ -26,23 +35,24 @@ const SidebarMenu: React.FC<SidebarProps> = ({ isOpen }) => {
       </div>
       <ul className="space-y-4">
         <li>
-          <Link to="/Prediction" className="flex items-center gap-3 hover:opacity-80">
+          <Link
+            to="/prediction"
+            className="flex items-center gap-3 hover:opacity-80"
+          >
             <BarChart2 size={20} />
             {isOpen && <span>Prediction</span>}
           </Link>
         </li>
 
+
         <li>
-          <div className="flex items-center gap-3">
-            <LineChart size={20} />
-            {isOpen && <span>Analysis</span>}
-          </div>
-        </li>
-        <li>
-          <div className="flex items-center gap-3">
+          <button
+            onClick={handleSignOut}
+            className="flex items-center gap-3 hover:opacity-80 w-full text-left"
+          >
             <LogOut size={20} />
             {isOpen && <span>Sign Out</span>}
-          </div>
+          </button>
         </li>
       </ul>
     </aside>

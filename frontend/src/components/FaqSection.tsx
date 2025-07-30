@@ -14,11 +14,7 @@ const faqData = [
     description:
       "You can log in using the email and password provided by our team. It is not possible to create an account or change the password manually.",
   },
-  {
-    title: "Is it secure?",
-    description:
-      "Yes, all passwords are securely hashed before being stored in our system.",
-  },
+
 ];
 
 const FaqSection = () => {
